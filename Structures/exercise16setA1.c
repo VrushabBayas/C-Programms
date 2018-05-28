@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <malloc.h>
-
+#include <string.h>
 //Student structure
 typedef struct student
 {
@@ -23,12 +23,14 @@ typedef struct student
 //All function declarations
 void acceptStudentInformation(PSTUD, int);
 void displayAllStudents(PSTUD, int);
+void search(PSTUD, char *, int);
 //entry point function
 int main()
 {
     int iSize = 0;
     PSTUD sPtr = NULL;
     int choice;
+    char name[20];
     printf("enter the number of students in school :");
     scanf("%d", &iSize);
 
@@ -52,6 +54,11 @@ int main()
 
         switch (choice)
         {
+        case 1:
+            printf("enter the name to search:");
+            scanf("%s", name);
+            search(sPtr, name, iSize);
+            break;
         case 3:
             displayAllStudents(sPtr, iSize);
             break;
@@ -102,5 +109,22 @@ void displayAllStudents(PSTUD sPtr, int iCount)
             printf("Marks of subject %d  :%d\n", j + 1, sPtr[i].marks[j]);
         }
         printf("\n");
+    }
+}
+
+void search(PSTUD sPtr, char name[], int iCount)
+{
+    int i = 0;
+    for (i = 0; i < iCount; i++)
+    {
+        if (strcmp(name, sPtr[i].sName) == 0)
+        {
+            printf("Match found \n");
+            return;
+        }
+        else
+        {
+            printf("Match not found..!\n");
+        }
     }
 }
