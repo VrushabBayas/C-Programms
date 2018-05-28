@@ -17,20 +17,27 @@ typedef struct student
     char sName[50];
     int iRollNo;
     float fPercentage;
-    int marks[3];
+    float marks[3];
 
 } STUD, *PSTUD;
+
 //All function declarations
+
 void acceptStudentInformation(PSTUD, int);
 void displayAllStudents(PSTUD, int);
 void search(PSTUD, char *, int);
+void modifyInformation(PSTUD, int, int);
+float findPercentatge(float *);
+void DispalyPercentageGreater(PSTUD, int, float);
+void MaxPercentage(PSTUD, int);
 //entry point function
 int main()
 {
     int iSize = 0;
     PSTUD sPtr = NULL;
-    int choice;
+    int choice = 0, rollNo = 0;
     char name[20];
+    float fPercentage = 0.0;
     printf("enter the number of students in school :");
     scanf("%d", &iSize);
 
@@ -59,8 +66,22 @@ int main()
             scanf("%s", name);
             search(sPtr, name, iSize);
             break;
+        case 2:
+            printf("enter the roll no to modify name:");
+            scanf("%d", &rollNo);
+            modifyInformation(sPtr, rollNo, iSize);
+            break;
+
         case 3:
             displayAllStudents(sPtr, iSize);
+            break;
+        case 4:
+            printf("Entet Percentages:");
+            scanf("%f", &fPercentage);
+            DispalyPercentageGreater(sPtr, iSize, fPercentage);
+            break;
+        case 5:
+            MaxPercentage(sPtr, iSize);
             break;
         case 6:
             exit(0);
@@ -90,7 +111,7 @@ void acceptStudentInformation(PSTUD sPtr, int iCount)
         for (j = 0; j < 3; j++)
         {
             printf("Enter the mark for subject %d :\n", j + 1);
-            scanf("%d", &(sPtr[i].marks[j]));
+            scanf("%f", &(sPtr[i].marks[j]));
         }
     }
 }
@@ -106,7 +127,7 @@ void displayAllStudents(PSTUD sPtr, int iCount)
         printf("Marks of the subjects:\n");
         for (j = 0; j < 3; j++)
         {
-            printf("Marks of subject %d  :%d\n", j + 1, sPtr[i].marks[j]);
+            printf("Marks of subject %d  :%f\n", j + 1, sPtr[i].marks[j]);
         }
         printf("\n");
     }
@@ -119,7 +140,7 @@ void search(PSTUD sPtr, char name[], int iCount)
     {
         if (strcmp(name, sPtr[i].sName) == 0)
         {
-            printf("Match found \n");
+            printf("Match found  roll number of student is :%d \n", sPtr[i].iRollNo);
             return;
         }
         else
@@ -127,4 +148,75 @@ void search(PSTUD sPtr, char name[], int iCount)
             printf("Match not found..!\n");
         }
     }
+}
+
+void modifyInformation(PSTUD sPtr, int rno, int iCount)
+{
+    int i = 0;
+    for (i = 0; i < iCount; i++)
+    {
+        if (rno == sPtr[i].iRollNo)
+        {
+
+            printf("Enter new Name:");
+            scanf("%s", sPtr[i].sName);
+            printf("Nmae has updated..!\n\n");
+            break;
+        }
+    }
+    if (i == iCount)
+    {
+        printf("roll number not found..!\n");
+    }
+}
+
+void DispalyPercentageGreater(PSTUD sPtr, int iCount, float fPercentage)
+{
+    int i = 0, j = 0;
+    float sPercentage = 0.0;
+    for (i = 0; i < iCount; i++)
+    {
+        sPercentage = findPercentatge(sPtr[i].marks);
+        sPtr[i].fPercentage = sPercentage;
+        if (sPercentage >= fPercentage)
+        {
+            printf("Student having percentage grater that  %f\n", fPercentage);
+            printf("Student name:%s\n", sPtr[i].sName);
+            printf("Student Roll No:%d\n", sPtr[i].iRollNo);
+            printf("Marks of the subjects:\n");
+            for (j = 0; j < 3; j++)
+            {
+                printf("Marks of subject %d  :%f\n", j + 1, sPtr[i].marks[j]);
+            }
+            printf("\n");
+        }
+        sPercentage = 0.0;
+    }
+}
+
+float findPercentatge(float marks[])
+{
+    int i = 0;
+    float sum = 0.0;
+    float per = 0.0;
+    for (i = 0; i < 3; i++)
+    {
+        sum += marks[i];
+    }
+    per += (sum / 300) * 100;
+    return per;
+}
+
+void MaxPercentage(PSTUD sPtr, int iCount)
+{
+    float max = 0.0;
+    int i = 0;
+    for (i = 0; i < iCount; i++)
+    {
+        if (sPtr[i].fPercentage > max)
+        {
+            max = sPtr[i].fPercentage;
+        }
+    }
+    printf("Max percentage is : %f  \n\n", max);
 }
