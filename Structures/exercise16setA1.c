@@ -85,6 +85,8 @@ int main()
             break;
         case 6:
             exit(0);
+        default:
+            printf("Invalid choice..!");
         }
     } while (choice != 6);
 }
