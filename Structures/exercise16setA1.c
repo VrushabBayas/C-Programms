@@ -18,6 +18,12 @@ typedef struct student
     int iRollNo;
     float fPercentage;
     float marks[3];
+    struct birt
+    {
+        int day : 32;
+        int month : 12;
+        int year;
+    } BIRTH;
 
 } STUD, *PSTUD;
 
@@ -94,7 +100,7 @@ int main()
 void acceptStudentInformation(PSTUD sPtr, int iCount)
 {
     int i = 0, j = 0;
-
+    int d, m, yy;
     if ((sPtr == NULL) || (iCount <= 0))
     {
         printf("Memory not allocated..!\n");
@@ -106,9 +112,14 @@ void acceptStudentInformation(PSTUD sPtr, int iCount)
     {
         printf("Enter information of student %d :\n", i + 1);
         printf("Enter the Name:\n");
-        scanf("%s", sPtr[i].sName);
+        scanf(" %[^'\n']s", sPtr[i].sName);
         printf("Enter the roll Number:\n");
         scanf("%d", &sPtr[i].iRollNo);
+        printf("Enter Birthdate of student\n");
+        scanf("%d%d%d", &d, &m, &yy);
+        sPtr[i].BIRTH.day = d;
+        sPtr[i].BIRTH.month = m;
+        sPtr[i].BIRTH.year = yy;
         printf("Enter the Marks for each subject:\n");
         for (j = 0; j < 3; j++)
         {
@@ -127,6 +138,8 @@ void displayAllStudents(PSTUD sPtr, int iCount)
         printf("Student name:%s\n", sPtr[i].sName);
         printf("Student Roll No:%d\n", sPtr[i].iRollNo);
         printf("Marks of the subjects:\n");
+        printf("Birth date of the student:\n");
+        printf("%d/%d/%d\n", sPtr[i].BIRTH.day, sPtr[i].BIRTH.month, sPtr[i].BIRTH.year);
         for (j = 0; j < 3; j++)
         {
             printf("Marks of subject %d  :%f\n", j + 1, sPtr[i].marks[j]);
